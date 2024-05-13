@@ -16,19 +16,7 @@ from tensorflow.keras.layers import Dense, LSTM
 
 import matplotlib.pyplot as plt
 
-def plot_scatter_diagrams(linear_reg, poly_model, rf_reg, rnn_model, X_test, y_test):
-    # Linear Regression scatter plot
-    linear_pred = linear_reg.predict(X_test)
-
-    # Polynomial Regression scatter plot
-    poly_pred = poly_model.predict(X_poly_test)
-
-    # Random Forest Regression scatter plot
-    rf_pred = rf_reg.predict(X_test)
-
-    # RNN scatter plot
-    rnn_pred = rnn_model.predict(X_test_rnn)
-
+def plot_scatter_diagrams(linear_pred, poly_pred, rf_pred, rnn_pred, y_test):
     plt.figure(figsize=(16, 10))
 
     # Linear Regression
@@ -86,7 +74,7 @@ df = pd.read_csv("data/house_price.csv")
 """
 # null data removal
 df.dropna(inplace=True)
-# Removing outliers --- VERY IMPORTANT, THE SCATTER DIEGRAMS WERE WRONG BEFORE REMOVING OUTLIERS
+# Removing outliers --- VERY IMPORTANT, THE SCATTER DIAGRAMS WERE WRONG BEFORE REMOVING OUTLIERS
 # Define a function to remove outliers based on IQR
 def remove_outliers_iqr(df, column):
     Q1 = df[column].quantile(0.25)
@@ -186,21 +174,22 @@ print("\nRNN:")
 print("MAE:", rnn_mae)
 print("MSE:", rnn_mse)
 
-plot_scatter_diagrams(linear_reg, poly_model, rf_reg, rnn_model, X_test, y_test)
-
-
-# Linear Regression scatter plot
+# Linear Regression predictions
 linear_pred = linear_reg.predict(X_test)
 
-# Polynomial Regression scatter plot
+# Polynomial Regression predictions
 poly_pred = poly_model.predict(X_poly_test)
 
-# Random Forest Regression scatter plot
+# Random Forest Regression predictions
 rf_pred = rf_reg.predict(X_test)
 
-# RNN scatter plot
+# RNN model predictions
 rnn_pred = rnn_model.predict(X_test_rnn)
-# Example usage:
+
+# Plotting scatter diagrams of each model predictions
+plot_scatter_diagrams(linear_pred, poly_pred, rf_pred, rnn_pred, y_test)
+
+# Writing original price and predicted price of each model
 write_model_results_single_example("Linear Regression", y_test, linear_pred)
 write_model_results_single_example("Polynomial Regression", y_test, poly_pred)
 write_model_results_single_example("Random Forest Regression", y_test, rf_pred)
